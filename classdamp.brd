@@ -59,12 +59,12 @@
 </layers>
 <board>
 <plain>
-<wire x1="0" y1="0" x2="88.57" y2="0" width="0" layer="20"/>
-<wire x1="88.57" y1="0" x2="88.57" y2="36.82" width="0" layer="20"/>
-<wire x1="88.57" y1="36.82" x2="0" y2="36.82" width="0" layer="20"/>
+<wire x1="0" y1="0" x2="89.84" y2="0" width="0" layer="20"/>
+<wire x1="89.84" y1="0" x2="89.84" y2="36.82" width="0" layer="20"/>
+<wire x1="89.84" y1="36.82" x2="0" y2="36.82" width="0" layer="20"/>
 <wire x1="0" y1="36.82" x2="0" y2="0" width="0" layer="20"/>
-<text x="86.995" y="19.05" size="1.778" layer="16" font="vector" rot="MR270">D-Amp</text>
-<text x="4.445" y="30.48" size="1.778" layer="16" font="vector" rot="MR270">Signal Generator</text>
+<text x="88.265" y="19.05" size="1.778" layer="16" font="vector" ratio="14" rot="MR270">D-Amp</text>
+<text x="4.445" y="30.48" size="1.778" layer="16" font="vector" ratio="15" rot="MR270">Signal Generator</text>
 </plain>
 <libraries>
 <library name="v-reg">
