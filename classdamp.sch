@@ -16940,6 +16940,8 @@ Grid 5.00 mm&lt;p&gt;
 <pinref part="IC1" gate="1" pin="OUT"/>
 <wire x1="27.94" y1="66.04" x2="38.1" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="C1" gate="G$1" pin="1"/>
+<junction x="38.1" y="66.04"/>
+<junction x="45.72" y="66.04"/>
 </segment>
 <segment>
 <wire x1="33.02" y1="12.7" x2="106.68" y2="12.7" width="0.1524" layer="91"/>
@@ -16954,6 +16956,8 @@ Grid 5.00 mm&lt;p&gt;
 <wire x1="157.48" y1="12.7" x2="157.48" y2="2.54" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="E"/>
 <wire x1="33.02" y1="5.08" x2="33.02" y2="12.7" width="0.1524" layer="91"/>
+<junction x="33.02" y="12.7"/>
+<junction x="106.68" y="12.7"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="VCC"/>
@@ -16969,6 +16973,9 @@ Grid 5.00 mm&lt;p&gt;
 <wire x1="-38.1" y1="-63.5" x2="-38.1" y2="-58.42" width="0.1524" layer="91"/>
 <pinref part="C3" gate="G$1" pin="1"/>
 <pinref part="C13" gate="G$1" pin="1"/>
+<junction x="-25.4" y="-63.5"/>
+<junction x="-30.48" y="-63.5"/>
+<junction x="-38.1" y="-63.5"/>
 </segment>
 <segment>
 <pinref part="JP8" gate="A" pin="3"/>
@@ -17035,6 +17042,7 @@ Grid 5.00 mm&lt;p&gt;
 <pinref part="X2" gate="-2" pin="KL"/>
 <wire x1="-10.16" y1="83.82" x2="-27.94" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="1"/>
+<junction x="-10.16" y="83.82"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -17109,6 +17117,9 @@ Grid 5.00 mm&lt;p&gt;
 <pinref part="R4" gate="G$1" pin="A"/>
 <wire x1="33.02" y1="-5.08" x2="33.02" y2="-15.24" width="0.1524" layer="91"/>
 <pinref part="C7" gate="G$1" pin="2"/>
+<junction x="33.02" y="-15.24"/>
+<junction x="53.34" y="-15.24"/>
+<junction x="109.22" y="-15.24"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="GND"/>
@@ -17122,6 +17133,8 @@ Grid 5.00 mm&lt;p&gt;
 <junction x="-38.1" y="-81.28"/>
 <pinref part="C3" gate="G$1" pin="2"/>
 <pinref part="C13" gate="G$1" pin="2"/>
+<junction x="-30.48" y="-81.28"/>
+<junction x="-22.86" y="-81.28"/>
 </segment>
 <segment>
 <pinref part="GND1" gate="1" pin="GND"/>
@@ -17237,6 +17250,7 @@ Grid 5.00 mm&lt;p&gt;
 <wire x1="157.48" y1="0" x2="170.18" y2="0" width="0.1524" layer="91"/>
 <wire x1="157.48" y1="0" x2="157.48" y2="-2.54" width="0.1524" layer="91"/>
 <pinref part="C9" gate="G$1" pin="1"/>
+<junction x="157.48" y="0"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="(ADC5/AIN0)PA6"/>
@@ -17288,6 +17302,7 @@ Grid 5.00 mm&lt;p&gt;
 <wire x1="109.22" y1="0" x2="93.98" y2="0" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="0" x2="109.22" y2="-2.54" width="0.1524" layer="91"/>
 <pinref part="C8" gate="G$1" pin="1"/>
+<junction x="109.22" y="0"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="(ADC6/AIN1)PA7"/>
