@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="mm" style="lines" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -60,15 +60,15 @@
 <board>
 <plain>
 <wire x1="0" y1="0" x2="88.57" y2="0" width="0" layer="20"/>
-<wire x1="88.57" y1="0" x2="88.57" y2="36.82" width="0" layer="20"/>
-<wire x1="88.57" y1="36.82" x2="0" y2="36.82" width="0" layer="20"/>
-<wire x1="0" y1="36.82" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="88.57" y1="0" x2="88.57" y2="38.09" width="0" layer="20"/>
+<wire x1="88.57" y1="38.09" x2="0" y2="38.09" width="0" layer="20"/>
+<wire x1="0" y1="38.09" x2="0" y2="0" width="0" layer="20"/>
 <text x="86.995" y="19.05" size="1.778" layer="16" font="vector" ratio="14" rot="MR270">D-Amp</text>
 <text x="4.445" y="30.48" size="1.778" layer="16" font="vector" ratio="15" rot="MR270">Signal Generator</text>
-<dimension x1="0" y1="38.1" x2="88.9" y2="38.1" x3="44.45" y3="43.18" textsize="1.778" textratio="15" layer="47"/>
-<dimension x1="89.84" y1="0" x2="89.84" y2="36.82" x3="96.52" y3="18.41" textsize="1.778" textratio="15" layer="47"/>
-<dimension x1="84.455" y1="33.02" x2="84.455" y2="3.81" x3="92.71" y3="18.415" textsize="1.778" textratio="15" layer="47"/>
-<dimension x1="3.81" y1="33.02" x2="84.455" y2="33.02" x3="44.1325" y3="39.37" textsize="1.778" textratio="15" layer="47"/>
+<dimension x1="0" y1="39.37" x2="88.9" y2="39.37" x3="44.45" y3="44.45" textsize="1.778" textratio="15" layer="47"/>
+<dimension x1="89.84" y1="0" x2="89.84" y2="38.09" x3="96.52" y3="19.045" textsize="1.778" textratio="15" layer="47" precision="1"/>
+<dimension x1="84.455" y1="33.655" x2="4.445" y2="33.655" x3="44.45" y3="40.64" textsize="1.778" textratio="15" layer="47"/>
+<dimension x1="84.455" y1="4.045" x2="84.455" y2="34.055" x3="92.71" y3="19.05" textsize="1.778" textratio="15" layer="47"/>
 </plain>
 <libraries>
 <library name="v-reg">
@@ -1851,10 +1851,10 @@ design rules under a new name.</description>
 <attribute name="MF" value="" x="77.47" y="12.7" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="77.47" y="12.7" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="H2" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="84.455" y="33.02" rot="MR0"/>
-<element name="H3" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="84.455" y="3.81"/>
-<element name="H4" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="3.81" y="3.81"/>
-<element name="H1" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="3.81" y="33.02"/>
+<element name="H2" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="84.455" y="34.055" rot="MR0"/>
+<element name="H3" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="84.455" y="4.045"/>
+<element name="H4" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="4.445" y="4.045"/>
+<element name="H1" library="holes" package="3,2" value="MOUNT-HOLE3.2" x="4.445" y="34.055"/>
 <element name="JP2" library="pinhead" package="1X03" value="ISP1" x="38.1" y="10.16" rot="R90"/>
 <element name="JP8" library="pinhead" package="1X03" value="ISP2" x="38.1" y="27.94" rot="R270"/>
 <element name="JP1" library="pinhead" package="1X02" value="On/Off" x="30.48" y="34.29"/>
@@ -2063,9 +2063,9 @@ design rules under a new name.</description>
 <signal name="N$8">
 <contactref element="JP4" pad="1"/>
 <contactref element="C6" pad="-"/>
-<wire x1="15.621" y1="7.62" x2="15.621" y2="11.049" width="0.6096" layer="16"/>
-<wire x1="15.621" y1="11.049" x2="15.24" y2="11.43" width="0.6096" layer="16"/>
-<wire x1="15.24" y1="11.43" x2="11.43" y2="11.43" width="0.6096" layer="16"/>
+<wire x1="15.621" y1="7.62" x2="15.621" y2="9.779" width="0.6096" layer="16"/>
+<wire x1="15.621" y1="9.779" x2="13.97" y2="11.43" width="0.6096" layer="16"/>
+<wire x1="13.97" y1="11.43" x2="11.43" y2="11.43" width="0.6096" layer="16"/>
 </signal>
 <signal name="N$10">
 <contactref element="C6" pad="+"/>
