@@ -40,7 +40,7 @@
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
@@ -65,6 +65,10 @@
 <wire x1="0" y1="36.82" x2="0" y2="0" width="0" layer="20"/>
 <text x="86.995" y="19.05" size="1.778" layer="16" font="vector" ratio="14" rot="MR270">D-Amp</text>
 <text x="4.445" y="30.48" size="1.778" layer="16" font="vector" ratio="15" rot="MR270">Signal Generator</text>
+<dimension x1="0" y1="38.1" x2="88.9" y2="38.1" x3="44.45" y3="43.18" textsize="1.778" textratio="15" layer="47"/>
+<dimension x1="89.84" y1="0" x2="89.84" y2="36.82" x3="96.52" y3="18.41" textsize="1.778" textratio="15" layer="47"/>
+<dimension x1="84.455" y1="33.02" x2="84.455" y2="3.81" x3="92.71" y3="18.415" textsize="1.778" textratio="15" layer="47"/>
+<dimension x1="3.81" y1="33.02" x2="84.455" y2="33.02" x3="44.1325" y3="39.37" textsize="1.778" textratio="15" layer="47"/>
 </plain>
 <libraries>
 <library name="v-reg">
