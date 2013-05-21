@@ -24,7 +24,7 @@
 #define DACN OCR1B
 #define DACT TC1H
 
-uint8_t mode_select = 0; //1: frequency generator, 0: external sound input
+volatile uint8_t mode_select = 0; //1: frequency generator, 0: external sound input
 
 volatile uint16_t period = 48;    //Compare register for frequency setting. 128 overflows to one period
 volatile uint8_t amplitude = 1;  //amplitude
@@ -34,18 +34,17 @@ volatile int16_t real_value = 0;
 #define ADCSRA_AUDIO        (1<<ADEN) | (1<<ADSC) | (1<<ADATE) | (1<<ADIE) | (4<<ADPS0)
 #define TCCR0B_AUDIO        0
 
-#define ADMUX_FREQ          (0<<REFS0) | (0<<REFS1) | (1<<ADLAR) | 5 // PB3, AVcc, 8 bit, 2.56V, left aligned
+#define ADMUX_FREQ          (0<<REFS0) | (0<<REFS1) | (0<<ADLAR) | 5 // PB3, AVcc, 8 bit, 5V, left aligned
 #define ADCSRA_FREQ         (1<<ADEN) | (1<<ADSC) | (1<<ADATE) | (1<<ADIE) | (7<<ADPS0) // CPU/128 sampling rate (9.6kHz);
-#define TCCR0B_FREQ         (4<<CS00)
+#define TCCR0B_FREQ         (3<<CS00)
 
 
 __attribute__((naked)) int main(void)
 {
-	// Configure ports
-	DDRB  = 0b00010000;
-	PORTB = 0b11101111;
+    _delay_ms(500);
+
     //Port A is ADC only
-    //DIDR0  = 0xFF; //(1<<ADC6D) | (1<<ADC5D) | (1<<ADC0D); //disable digital input on ADC pins
+    DIDR0  = 0xFF; //(1<<ADC6D) | (1<<ADC5D) | (1<<ADC0D); //disable digital input on ADC pins
 
 	// ADC
 	ADMUX  = ADMUX_AUDIO ;
@@ -59,23 +58,28 @@ __attribute__((naked)) int main(void)
     TIMSK |= (1<<OCIE0A); //interrupt on compare match / counter reset
 
     //Timer1: PWM
-    TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (1<<PWM1A) | (1<<PWM1B);
-    TCCR1B = (1<<CS10); //  CLK/1  -> 64MHz/1/1024 = 62kHz
-    TCCR1C |= 0b11000000;
+    TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (0<<PWM1A) | (0<<PWM1B) | (1<<FOC1A) | (1<<FOC1B);
+    TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (1<<PWM1A) | (1<<PWM1B) | (0<<FOC1A) | (0<<FOC1B);
+    TCCR1B = (1<<7) | (1<<CS10); //  CLK/1  -> 64MHz/1/1024 = 62kHz
+    TCCR1C |= 0b11110000;
     TCCR1D = 0;
     //TCCR1E = 0x0a;
     TC1H   = 0x3;  //set overflow for timer to 0x3ff
     OCR1C  = 0xFF;
     TC1H   = 0;
-    OCR1A  = 0x0F;
-    OCR1B  = 0x0F;
-    TCNT1  = 0;
+    //OCR1A  = 0x0F;
+    //OCR1B  = 0x0F;
+    //TCNT1  = 0;
     PLLCSR = (1<<PCKE) | (1<<PLLE);
     TIMSK |= (1<<TOIE1);
 
+	// Configure ports
+	DDRB  = 0b00011010;
+	PORTB = 0b11100001;
+
 	sei();
 	while(1) {
-		_delay_us(100);/*
+		_delay_us(100);
         
         if(mode_select != ((~PINB) & 1) ) {
             if(mode_select == 0) {  //change to generator
@@ -90,37 +94,38 @@ __attribute__((naked)) int main(void)
 	            ADMUX  = ADMUX_AUDIO;
 	            ADCSRA = ADCSRA_AUDIO;
                 }
-            }*/
+            }
 	    }
     }
 
 //mode 1: switch between ADC 5 (vol) and 6 (freq), set frequency and amplitude registers, two reads per input
 //mode 0: copy ADC value to real_value for PWM
 ISR(ADC_vect) {
-	sei();
+
 	static uint8_t channel = 5;
 	static uint8_t valid = 0; //accept only second read from each input.
 	if(mode_select == 1) { // read 
 		if(valid == 0) {
 			valid = 1;
 		} else {		
+            sei();
 			valid = 0;
 			if (channel==6) {
     			ADMUX = (ADMUX & 0xF0) | 5;
 				period -= period/4;
-				period += ADCH;
+				period += ADC/4;
 				if (period < 40) period = 40;  //upper limit to prevent too high interrupt load
 				OCR0A = period/4;
 				channel = 5;
 			} else {
     			ADMUX = (ADMUX & 0xF0) | 6;
-				amplitude = ADCH;
+				amplitude = ADC >> 2;
 				channel = 6;
 	    		}		
 		    }	
 	    }		
     else {
-        real_value = ADC;
+        real_value = ADC -512;
         }
 		
 }	
@@ -129,9 +134,12 @@ ISR(ADC_vect) {
 //40<period<255 --> 3.8 - 97 Hz
 ISR(TIMER0_COMPA_vect) {
 	sei();
+    //PORTB ^= (1<<4);
+    
 	static int8_t direction = 1;  //ramp up or down
     static int8_t value = 0;
     static uint8_t cur_amplitude = 0;
+    static int16_t tmp_value = 0;
 
     // Amplitude changes at 0 only
     if (value == 0) 
@@ -140,49 +148,48 @@ ISR(TIMER0_COMPA_vect) {
 	value = value + direction;
 
 #if 0 //standard arithmetic
-	real_value = ((int16_t)value * cur_amplitude) / 4;
+	real_value = ((int16_t)value * cur_amplitude) / 8;
 
 
 #else //optimized without multiplication.
     if (value == 0) {
-        real_value = 0; //reset to correct 0 value
+        tmp_value = 0; //reset to correct 0 value
         }
-    else if (direction == 1)
-        real_value = real_value + cur_amplitude;
-    else
-        real_value = real_value - cur_amplitude;
-    real_value >>= 2;
+    else {
+        if (direction == 1)
+            tmp_value = tmp_value + cur_amplitude;
+        else
+            tmp_value = tmp_value - cur_amplitude;
+        }           
+    real_value = tmp_value /8;
 #endif
 
-	if(value <= -31 || value >= 31)
+	if(value <= -63 || value >= 63)
     	direction = -direction;
 
 }
 
 	
 
-
-
 ISR(TIMER1_OVF_vect) {
 	int16_t val1	= real_value ;//>> 1;
-    //uint8_t val2    = real_value & 1;
+    uint8_t val2    = real_value & 0;
     uint16_t pos;
     uint16_t neg;
-        PORTB ^= (1<<PB4);
 	if(val1 > 511)
 	    val1 = 511;
-	else if(val1 < -511)
-	    val1 = -511;
+	else if(val1 < -512)
+	    val1 = -512;
 
-	pos = 512 + val1;//+ val2;
-	neg = 512 - val1;
+	pos = 511 + val1 + val2;
+	neg = 511 - val1;
 
-/*
+
     DACT = (pos >> 8);
 	DACP = pos;
 
     DACT = (neg >> 8);
 	DACN = neg;
-*/
+
 }
 
