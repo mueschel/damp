@@ -42,10 +42,10 @@ volatile int16_t real_value = 0;
 __attribute__((naked)) int main(void)
 {
 	// Configure ports
-	DDRB  = 0b00011010;
-	PORTB = 0b11100101;
+	DDRB  = 0b00010000;
+	PORTB = 0b11101111;
     //Port A is ADC only
-    DIDR0  = 0xFF; //(1<<ADC6D) | (1<<ADC5D) | (1<<ADC0D); //disable digital input on ADC pins
+    //DIDR0  = 0xFF; //(1<<ADC6D) | (1<<ADC5D) | (1<<ADC0D); //disable digital input on ADC pins
 
 	// ADC
 	ADMUX  = ADMUX_AUDIO ;
@@ -61,18 +61,23 @@ __attribute__((naked)) int main(void)
     //Timer1: PWM
     TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (1<<PWM1A) | (1<<PWM1B);
     TCCR1B = (1<<CS10); //  CLK/1  -> 64MHz/1/1024 = 62kHz
-    TCCR1C = 0;
+    TCCR1C |= 0b11000000;
     TCCR1D = 0;
-    TCCR1E = 0;
+    //TCCR1E = 0x0a;
     TC1H   = 0x3;  //set overflow for timer to 0x3ff
     OCR1C  = 0xFF;
+    TC1H   = 0;
+    OCR1A  = 0x0F;
+    OCR1B  = 0x0F;
+    TCNT1  = 0;
     PLLCSR = (1<<PCKE) | (1<<PLLE);
     TIMSK |= (1<<TOIE1);
 
 	sei();
 	while(1) {
-		_delay_us(100);
-        if(mode_select != ((PINB >> 6) & 1) ) {
+		_delay_us(100);/*
+        
+        if(mode_select != ((~PINB) & 1) ) {
             if(mode_select == 0) {  //change to generator
                 mode_select = 1;
                 TCCR0B = TCCR0B_FREQ;
@@ -85,7 +90,7 @@ __attribute__((naked)) int main(void)
 	            ADMUX  = ADMUX_AUDIO;
 	            ADCSRA = ADCSRA_AUDIO;
                 }
-            }
+            }*/
 	    }
     }
 
@@ -100,17 +105,17 @@ ISR(ADC_vect) {
 			valid = 1;
 		} else {		
 			valid = 0;
-			if (channel==5) {
-    			ADMUX = (ADMUX & 0xF0) | 6;
+			if (channel==6) {
+    			ADMUX = (ADMUX & 0xF0) | 5;
 				period -= period/4;
 				period += ADCH;
 				if (period < 40) period = 40;  //upper limit to prevent too high interrupt load
 				OCR0A = period/4;
-				channel = 6;
-			} else {
-    			ADMUX = (ADMUX & 0xF0) | 5;
-				amplitude = ADCH;
 				channel = 5;
+			} else {
+    			ADMUX = (ADMUX & 0xF0) | 6;
+				amplitude = ADCH;
+				channel = 6;
 	    		}		
 		    }	
 	    }		
@@ -163,7 +168,7 @@ ISR(TIMER1_OVF_vect) {
     //uint8_t val2    = real_value & 1;
     uint16_t pos;
     uint16_t neg;
-
+        PORTB ^= (1<<PB4);
 	if(val1 > 511)
 	    val1 = 511;
 	else if(val1 < -511)
@@ -172,11 +177,12 @@ ISR(TIMER1_OVF_vect) {
 	pos = 512 + val1;//+ val2;
 	neg = 512 - val1;
 
-
+/*
     DACT = (pos >> 8);
 	DACP = pos;
 
     DACT = (neg >> 8);
 	DACN = neg;
+*/
 }
 
