@@ -148,15 +148,10 @@ ISR(TIMER0_COMPA_vect) {
     if(++time & 1)
         return;
 
-    // Amplitude changes at 0 only
-    if (value == 0) 
-        cur_amplitude = amplitude;
-
-	value = value + direction;
-
 	//real_value = ((int16_t)value * cur_amplitude) / 8;
     if (value == 0) {
         tmp_value = 0; //reset to correct 0 value
+        cur_amplitude = amplitude;
         }
     else {
         if (direction == 1)
@@ -167,6 +162,7 @@ ISR(TIMER0_COMPA_vect) {
 
 	if(value <= -63 || value >= 63)
     	direction = -direction;
+	value = value + direction;
 
     uint16_t real_value = 1024 + tmp_value /16;
     uint16_t val1 = real_value >> 1;
