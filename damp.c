@@ -32,7 +32,7 @@ volatile uint16_t real_value_pos = 512;
 volatile uint16_t real_value_neg = 512;
 
 #define ADMUX_AUDIO         (1<<REFS0) | (1<<REFS1) | (0<<ADLAR) | 0   //input 0, reference internal 2.56V with capacitor
-#define ADCSRA_AUDIO        (1<<ADEN) | (1<<ADSC) | (1<<ADATE) | (1<<ADIE) | (4<<ADPS0)
+#define ADCSRA_AUDIO        (1<<ADEN) | (1<<ADSC) | (1<<ADATE) | (1<<ADIE) | (5<<ADPS0)
 #define TCCR0B_AUDIO        0
 
 #define ADMUX_FREQ          (0<<REFS0) | (0<<REFS1) | (0<<ADLAR) | 5 // PB3, AVcc, 8 bit, 5V, left aligned
@@ -61,7 +61,7 @@ __attribute__((naked)) int main(void)
     //Timer1: PWM
     TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (0<<PWM1A) | (0<<PWM1B) | (1<<FOC1A) | (1<<FOC1B);
     TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (1<<PWM1A) | (1<<PWM1B) | (0<<FOC1A) | (0<<FOC1B);
-    TCCR1B = (1<<7) | (1<<CS10); //  CLK/1  -> 64MHz/1/1024 = 62kHz
+    TCCR1B = (0<<7) | (2<<CS10); //  CLK/1  -> 64MHz/1/1024 = 62kHz
     TCCR1C |= 0b11110000;
     TCCR1D = 0;
     //TCCR1E = 0x0a;
@@ -166,11 +166,11 @@ ISR(TIMER0_COMPA_vect) {
 
     uint16_t real_value = 1024 + tmp_value /16;
     uint16_t val1 = real_value >> 1;
-    uint16_t val2 = real_value & 1;
-    if(val1 > 1023)
-        val1 = 1023;
-    if(val1 < 0)
-        val1 = 0;
+    uint16_t val2 = 0;// real_value & 1;
+    //if(val1 > 1023)
+    //    val1 = 1023;
+    //if(val1 < 0)
+    //    val1 = 0;
     real_value_pos = val1 + val2;
     real_value_neg = 1023 - val1;
 }
@@ -189,6 +189,4 @@ ISR(TIMER1_OVF_vect) {
 
     DACT = (neg >> 8);
 	DACN = neg;
-
-}
-
+}    
